@@ -1,4 +1,4 @@
-What kinds of analytics question can be answered with this graph data model? 
+Please refer below for the graph data model. What kind of analytics question can be easily solved by graph database but not relational database? 
 
 - Nodes 
     - COMMENT
