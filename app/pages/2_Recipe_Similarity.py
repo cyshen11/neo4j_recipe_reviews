@@ -35,6 +35,23 @@ with pagecol1:
 
     st.markdown("Most similar recipes")
 
+    similar_recipes = db.run_cypher(
+        query=db.generate_query(
+            cypher_filename='get_similar_recipes.cypher'
+        ).format(
+            recipe=recipe
+        )
+        ,database=st.secrets["DATABASE"]
+    )
+
+    df = pd.DataFrame({
+        'Recipe': similar_recipes['recipe_name'],
+        'Shared Commenter Count': similar_recipes['shared_commenter_count']
+    })
+    df.index = range(1, len(df) + 1)
+
+    st.dataframe(df)
+
     #     n = st.number_input(
     #         'Select number of users (N)',
     #         min_value = 3,
