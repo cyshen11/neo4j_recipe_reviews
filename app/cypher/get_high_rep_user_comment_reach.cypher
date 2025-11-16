@@ -3,7 +3,7 @@
 // Find highest-reputation-users
 MATCH (top_users:USER)
 ORDER BY top_users.user_reputation DESC
-LIMIT 10
+LIMIT {n}
 
 WITH top_users
 MATCH (u:USER) - [:POSTED] - (:COMMENT) - [:BELONGS_TO] -> (r:RECIPE) <- [:BELONGS_TO] - (:COMMENT) - [:POSTED] - (top_users)
@@ -13,5 +13,6 @@ RETURN
     top_users.user_name, 
     top_users.user_reputation,
     collect(DISTINCT r.recipe_name) AS recipe_name, 
-    collect(DISTINCT u.user_name) AS reach
+    count(DISTINCT u.user_name) AS reach,
+    collect(DISTINCT u.user_name) AS users_reached
 ;
