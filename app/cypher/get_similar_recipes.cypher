@@ -6,7 +6,8 @@ WHERE
 
 RETURN
     r1.recipe_name AS recipe_name,
-    COUNT(DISTINCT u) AS shared_commenter_count
+    COUNT(DISTINCT u) AS shared_commenter_count,
+    COLLECT(DISTINCT u.user_name) AS shared_commenters
 ORDER BY shared_commenter_count DESC
 LIMIT 5
 ;

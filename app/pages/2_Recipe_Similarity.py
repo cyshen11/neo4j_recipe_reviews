@@ -15,7 +15,7 @@ st.set_page_config(page_title="Recipe Similarity", layout="wide")
 
 st.markdown("# Recipe Similarity")
 
-st.markdown("What recipes are most similar to each other based on commeter overlap?")
+st.markdown("What recipes are most similar to each other based on commenter overlap?")
 
 pagecol1, pagecol2 = st.columns(2)
 
@@ -52,89 +52,49 @@ with pagecol1:
 
     st.dataframe(df)
 
-    #     n = st.number_input(
-    #         'Select number of users (N)',
-    #         min_value = 3,
-    #         value = 10,
-    #         step = 1
-    #     )
 
-    # df = db.run_cypher(
-    #     query=db.generate_query(
-    #         cypher_filename='get_high_rep_user_comment_reach.cypher'
-    #     ).format(
-    #         n=n
-    #     )
-    #     ,database=st.secrets["DATABASE"]
-    # )
+with pagecol2:
 
-    # df_display = pd.DataFrame({
-    #     'User': df['top_users.user_name'],
-    #     'Reputation': df['top_users.user_reputation'],
-    #     'Reach': df['reach'],
-    # })
-    # df_display.index = range(1, len(df_display) + 1)
+    similar_recipe = st.selectbox(
+        'Select similar recipe to view the shared commenters',
+        similar_recipes['recipe_name']
+    )
 
-    # st.dataframe(df_display)
+    commenters = similar_recipes.query(f"recipe_name == '{similar_recipe}'")
 
-# with pagecol2:
+    # --- 1. Create a networkx graph ---
+    G = nx.Graph()
 
-#     # --- Visualization --- #
-#     col3, col4 = st.columns(2)
-#     with col3:
-#         user = st.selectbox("Select user to view user's reach", df['top_users.user_name'])
-#     with col4:
-#         recipe_count = st.number_input(
-#             'Select min. # recipe count',
-#             min_value = 2,
-#             value = 2,
-#             step = 1
-#         )
-#     df_reached_user = db.run_cypher(
-#         query=db.generate_query(
-#             cypher_filename='get_reached_user.cypher'
-#         ).format(
-#             user=user,
-#             recipe_count=recipe_count
-#         )
-#         ,database=st.secrets["DATABASE"]
-#     )
-#     st.info(f"Filtered to users have commented on at least {recipe_count} same recipes")
+    G.add_node(similar_recipe, size=25, title=similar_recipe)
+    for c in commenters['shared_commenters'].values[0]:
+        G.add_node(c, size = 5, title=c)
+        G.add_edge(c, similar_recipe)
 
-#     # --- 1. Create a networkx graph ---
-#     G = nx.Graph()
+    # --- 2. Convert networkx graph to a list of Nodes and Edges ---
+    nodes = [Node(
+        id=n,
+        label=str(n),
+        size=G.nodes[n].get('size', 10),
+        title=G.nodes[n].get('title', '')
+    ) for n in G.nodes]
 
-#     G.add_node(user, size=25, title=user)
-#     for u, recipe_count in zip(df_reached_user['reached_user'].values, df_reached_user['recipe_count'].values):
-#         G.add_node(u, size = 5, title=u)
-#         G.add_edge(user, u, weight=int(recipe_count), label="Reach")
+    edges = [Edge(
+        source=v,
+        target=u,
+        label=''
+    ) for u, v in G.edges]
 
-#     # --- 2. Convert networkx graph to a list of Nodes and Edges ---
-#     nodes = [Node(
-#         id=n,
-#         label=str(n),
-#         size=G.nodes[n].get('size', 10),
-#         title=G.nodes[n].get('title', '')
-#     ) for n in G.nodes]
+    # --- 3. Configure the graph's appearance ---
+    config = Config(
+        width=400,
+        height=300,
+        directed=True,
+        physics=True,
+        hierarchical=False
+    )
 
-#     edges = [Edge(
-#         source=u,
-#         target=v,
-#         label='',
-#         weight=G.edges[u,v].get('weight', 2)
-#     ) for u, v in G.edges]
-
-#     # --- 3. Configure the graph's appearance ---
-#     config = Config(
-#         width=400,
-#         height=300,
-#         directed=True,
-#         physics=True,
-#         hierarchical=False
-#     )
-
-#     return_value = agraph(
-#         nodes=nodes,
-#         edges=edges,
-#         config=config
-#     )
+    return_value = agraph(
+        nodes=nodes,
+        edges=edges,
+        config=config
+    )
