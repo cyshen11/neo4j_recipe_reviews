@@ -8,8 +8,11 @@ db = Database(
 )
 
 st.title("Recipe Reviews & User Feedback Analysis")
+
 st.write(db.run_cypher(
-    cypher_filename='get_recipe.cypher'
+    query=db.generate_query(
+        cypher_filename='get_high_rep_user_comment_reach.cypher'
+    )
     ,database=st.secrets["DATABASE"]
 ))
 
