@@ -7,18 +7,20 @@ class Database():
             ,auth=(username, password)
         )
 
-    def run_cypher(self, cypher_filename: str, database: str):
+    def generate_query(self, cypher_filename: str):
         try:
             with open(f'cypher/{cypher_filename}', 'r') as file:
                 query = file.read()
-
-            return self.driver.execute_query(
-                query_=query
-                ,database=database
-            ) 
+            return query
         except FileNotFoundError:
             print(f"Error: The file '{cypher_filename}' was not found.")
         except Exception as e:
             print(f"An error occurred: {e}")
+
+    def run_cypher(self, query: str, database: str) -> dict:
+        return self.driver.execute_query(
+            query_=query
+            ,database=database
+        ) 
         
         
