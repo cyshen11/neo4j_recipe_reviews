@@ -111,4 +111,3 @@ with pagecol2:
         edges=edges,
         config=config
     )
-    st.write(return_value)
