@@ -18,9 +18,8 @@ class Database():
             print(f"An error occurred: {e}")
 
     def run_cypher(self, query: str, database: str) -> dict:
-        return self.driver.execute_query(
-            query_=query
-            ,database=database
-        ) 
-        
+        with self.driver.session() as session:
+            results = session.run(query=query, database=database)
+            df = results.to_df()
+        return df
         
