@@ -12,6 +12,9 @@ st.set_page_config(page_title="Influential Commenter Analysis")
 
 st.markdown("# Influential Commenter Analysis")
 
+st.markdown("### Reach of High Reputation User")
+st.info("Reach = Count of users who have commented on the same recipes as the top N highest-reputation users")
+
 col1, col2 = st.columns([2,4])
 
 with col1:
