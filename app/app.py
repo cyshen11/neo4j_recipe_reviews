@@ -20,7 +20,7 @@ with tab1:
 
     with col1:
         n = st.number_input(
-            'Select number of users',
+            'Select number of users (N)',
             min_value = 3,
             value = 10,
             step = 1
