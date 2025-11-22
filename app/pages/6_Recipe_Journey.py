@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd
 from component.database import Database
-import numpy as np
-import plotly.graph_objects as go
 
 db = Database(
     uri=st.secrets["URI"]
