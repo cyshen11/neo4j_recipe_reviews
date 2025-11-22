@@ -72,7 +72,7 @@ with pagecol2:
         )
         ,database=st.secrets["DATABASE"]
     )
-    st.info(f"Filtered to users have commented on at least {recipe_count} same recipes")
+    st.info(f"""Filtered to users have commented on at least {recipe_count} same recipes. **Average reputation of users: {round(df_reached_user['reached_user_reputation'].mean())}**""")
 
     # --- 1. Create a networkx graph ---
     G = nx.Graph()
