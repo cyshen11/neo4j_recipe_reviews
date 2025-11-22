@@ -12,7 +12,7 @@
 
 5. Chain of Influence: Trace the user_reputation or thumbs_up scores through the network. For a specific high-reputation user, what is the average thumbs_up count of the comments on the recipes they have also commented on? This measures their indirect influence on a recipe's overall engagement.
 
-6. Outlier Detection: Identify users who comment on a diverse range of recipes that have little to no commenter overlap with one another. This could point to users with eclectic tastes or those who are not part of any specific community.
+~~6. Outlier Detection: Identify users who comment on a diverse range of recipes that have little to no commenter overlap with one another. This could point to users with eclectic tastes or those who are not part of any specific community.~~ (Could not find user who fits this criteria)
 
 7. Community Bridging: Find users who have commented on recipes from two or more distinct user "tribes." These "bridge" users are critical for connecting different parts of the community and could be influential.
 
