@@ -9,12 +9,13 @@ MATCH (u:USER) - [:POSTED] - (:COMMENT) - [:BELONGS_TO] -> (r:RECIPE) <- [:BELON
 WHERE u.user_id <> top_users.user_id
 
 WITH 
-    u.user_name AS reached_user,
+    u AS reached_user,
     count(DISTINCT r.recipe_name) AS recipe_count
 WHERE recipe_count >= {recipe_count}
 
 RETURN 
-    reached_user,
-    recipe_count
+    reached_user.user_name AS reached_user,
+    recipe_count,
+    reached_user.user_reputation AS reached_user_reputation
 ORDER BY recipe_count DESC
 ;
