@@ -1,9 +1,6 @@
 import streamlit as st
 import pandas as pd
 from component.database import Database
-import networkx as nx
-from pyvis.network import Network
-from streamlit_agraph import agraph, Node, Edge, Config
 
 db = Database(
     uri=st.secrets["URI"]
