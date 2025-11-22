@@ -25,20 +25,17 @@ recipe = st.selectbox(
     all_recipes['recipe_name']
 )
 
-other_recipes_commented = db.run_cypher(
+commenting_paths = db.run_cypher(
     query=db.generate_query(
         cypher_filename='get_user_commenting_paths.cypher'
-    ).format(
-        recipe=recipe
-    )
+    ).replace('{recipe}', recipe)
     ,database=st.secrets["DATABASE"]
 )
 
-st.markdown(f"Besides {recipe}, users also commented on")
 st.dataframe(
     pd.DataFrame({
-        'Recipe': other_recipes_commented['recipe_name'],
-        'User Count': other_recipes_commented['user_count']
+        'Commenting Path': commenting_paths['commenting_path'].apply(lambda x: ' → '.join(x)),
+        'User Count': commenting_paths['user_count']
     }), 
     hide_index=True
 )
