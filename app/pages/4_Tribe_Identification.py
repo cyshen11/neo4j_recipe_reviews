@@ -17,25 +17,20 @@ st.markdown("# Tribe Identification")
 st.info("""
 Clusters of users who have commented on same recipes. This could be used to identify communities or "tribes" of users with shared interests, even if they don't directly interact.
 
-If unable to query tribes, click *Create tribes*. *Query tribes* only get first 5 users for each tribe.
+If there is error, click *Create tribes*. *Query tribes* only get first 5 users for each tribe.
 """)
 
-col1, col2, col3 = st.columns([1, 1, 2])
+if st.button("Create tribes"):
+    db.run_cypher(
+        query=db.generate_query(
+            cypher_filename='create_tribe_graph.cypher'
+        )
+        ,database=st.secrets["DATABASE"]
+    )
+
+col1, col2 = st.columns([4, 1]) 
 
 with col1:
-    if st.button("Create tribes"):
-        db.run_cypher(
-            query=db.generate_query(
-                cypher_filename='create_tribe_graph.cypher'
-            )
-            ,database=st.secrets["DATABASE"]
-        )
-
-with col2:
-    query_tribe = st.button("Query tribes")
-
-if query_tribe:
-
     df = db.run_cypher(
         query=db.generate_query(
             cypher_filename='get_tribes.cypher'
@@ -101,7 +96,7 @@ if query_tribe:
     # --- 3. Configure the graph's appearance ---
     config = Config(
         width=800,
-        height=800,
+        height=400,
         directed=False,
         physics=True,
         hierarchical=False
@@ -112,3 +107,13 @@ if query_tribe:
         edges=edges,
         config=config
     )
+
+with col2:
+    bridge_users = db.run_cypher(
+        query=db.generate_query(
+            cypher_filename='get_bridge_users.cypher'
+        )
+        ,database=st.secrets["DATABASE"]
+    )
+
+    st.dataframe(pd.DataFrame({'"Bridge" User': bridge_users['user_name']}), hide_index=True)
