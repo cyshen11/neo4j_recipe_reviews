@@ -18,8 +18,7 @@ WITH user, c.recipe AS recipe, c.created AS created
 ORDER BY user, created
 
 WITH user,
-    COLLECT(recipe) AS commenting_path,
-    COLLECT(created) AS commenting_times
+    COLLECT(DISTINCT recipe) AS commenting_path
 
 WITH commenting_path,
     COUNT(user) AS user_count
