@@ -14,7 +14,11 @@ db = Database(
 
 st.markdown("# Tribe Identification")
 
-st.info("If unable to query tribes, click *Create tribes*. *Query tribes* only get first 5 users for each tribe.")
+st.info("""
+Clusters of users who have commented on same recipes. This could be used to identify communities or "tribes" of users with shared interests, even if they don't directly interact.
+
+If unable to query tribes, click *Create tribes*. *Query tribes* only get first 5 users for each tribe.
+""")
 
 col1, col2, col3 = st.columns([1, 1, 2])
 
