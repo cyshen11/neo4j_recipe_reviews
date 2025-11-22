@@ -10,6 +10,11 @@ db = Database(
 
 st.markdown("# User-Recipe Commenting Paths")
 
+st.info("""What are the most common paths a user takes when commenting on recipes? 
+
+For example, do users who comment on baking recipes tend to also comment on a specific type of dessert recipe? 
+This uncovers user behavior patterns.""")
+
 all_recipes = db.run_cypher(
     query=db.generate_query(
         cypher_filename='get_all_recipes.cypher'
