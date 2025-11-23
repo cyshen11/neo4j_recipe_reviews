@@ -9,7 +9,7 @@ class Database():
 
     def generate_query(self, cypher_filename: str):
         try:
-            with open(f'cypher/{cypher_filename}', 'r') as file:
+            with open(f'app/cypher/{cypher_filename}', 'r') as file:
                 query = file.read()
             return query
         except FileNotFoundError:
