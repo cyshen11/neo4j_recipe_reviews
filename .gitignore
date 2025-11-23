@@ -200,7 +200,7 @@ marimo/_lsp/
 __marimo__/
 
 # Streamlit
-.streamlit/secrets.toml
+app/.streamlit/secrets.toml
 
 # CSV
 *.csv
