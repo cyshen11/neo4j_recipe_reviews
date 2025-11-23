@@ -16,9 +16,9 @@ import numpy as np
 
 # Initialize a connection to the Neo4j database using credentials from Streamlit secrets.
 db = Database(
-    uri=st.secrets["URI"],
-    username=st.secrets["USERNAME"],
-    password=st.secrets["PASSWORD"],
+    uri=st.secrets["NEO4J_URI"],
+    username=st.secrets["NEO4J_USERNAME"],
+    password=st.secrets["NEO4J_PASSWORD"],
 )
 
 st.markdown("# Chain of Influence")
@@ -37,7 +37,7 @@ This measures their indirect influence on a recipe's overall engagement.
 # Fetch a list of all users, sorted by their reputation score, to populate the dropdown.
 user_sort_by_rep = db.run_cypher(
     query=db.generate_query(cypher_filename="get_users_sort_by_rep.cypher"),
-    database=st.secrets["DATABASE"],
+    database=st.secrets["NEO4J_DATABASE"],
 )
 
 # User input to select a user to analyze.
@@ -54,7 +54,7 @@ col1.metric(label="Reputation", value=reputation)
 
 comments = db.run_cypher(
     query=db.generate_query(cypher_filename="get_comments.cypher").format(user=user),
-    database=st.secrets["DATABASE"],
+    database=st.secrets["NEO4J_DATABASE"],
 )
 # Convert the 'created_at' Unix timestamp to a readable datetime format.
 # The logic checks if the timestamp is likely in milliseconds ( > 1e12) or seconds

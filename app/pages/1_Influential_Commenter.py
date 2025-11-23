@@ -15,9 +15,9 @@ from streamlit_agraph import agraph, Node, Edge, Config
 
 # Initialize a connection to the Neo4j database using credentials from Streamlit secrets.
 db = Database(
-    uri=st.secrets["URI"],
-    username=st.secrets["USERNAME"],
-    password=st.secrets["PASSWORD"],
+    uri=st.secrets["NEO4J_URI"],
+    username=st.secrets["NEO4J_USERNAME"],
+    password=st.secrets["NEO4J_PASSWORD"],
 )
 
 st.set_page_config(page_title="Influential Commenter", layout="wide")
@@ -49,7 +49,7 @@ with pagecol1:
         query=db.generate_query(
             cypher_filename="get_high_rep_user_comment_reach.cypher"
         ).format(n=n),
-        database=st.secrets["DATABASE"],
+        database=st.secrets["NEO4J_DATABASE"],
     )
 
     # Prepare the DataFrame for display by selecting and renaming columns.
@@ -87,7 +87,7 @@ with pagecol2:
             # same recipes as the selected `user`.
             cypher_filename="get_reached_user.cypher"
         ).format(user=user, recipe_count=recipe_count),
-        database=st.secrets["DATABASE"],
+        database=st.secrets["NEO4J_DATABASE"],
     )
     # Display an informational message with the average reputation of the reached users.
     st.info(

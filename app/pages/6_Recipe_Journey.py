@@ -15,9 +15,9 @@ from component.database import Database
 
 # Initialize a connection to the Neo4j database using credentials from Streamlit secrets.
 db = Database(
-    uri=st.secrets["URI"],
-    username=st.secrets["USERNAME"],
-    password=st.secrets["PASSWORD"],
+    uri=st.secrets["NEO4J_URI"],
+    username=st.secrets["NEO4J_USERNAME"],
+    password=st.secrets["NEO4J_PASSWORD"],
 )
 
 st.markdown("# Recipe Journey")
@@ -33,7 +33,7 @@ Commenting journey of a new user. What are the first 3 recipes they comment on?
 # The query logic is contained in the specified .cypher file.
 df = db.run_cypher(
     query=db.generate_query(cypher_filename="get_new_user_commenting_journey.cypher"),
-    database=st.secrets["DATABASE"],
+    database=st.secrets["NEO4J_DATABASE"],
 )
 
 # Display the results in a Streamlit DataFrame.

@@ -19,9 +19,9 @@ import colorsys
 
 # Initialize a connection to the Neo4j database using credentials from Streamlit secrets.
 db = Database(
-    uri=st.secrets["URI"],
-    username=st.secrets["USERNAME"],
-    password=st.secrets["PASSWORD"],
+    uri=st.secrets["NEO4J_URI"],
+    username=st.secrets["NEO4J_USERNAME"],
+    password=st.secrets["NEO4J_PASSWORD"],
 )
 
 st.markdown("# Tribe Identification")
@@ -40,7 +40,7 @@ If there is an error, click `Create tribes` button below. `Query tribes` will on
 if st.button("Create tribes"):
     db.run_cypher(
         query=db.generate_query(cypher_filename="create_tribe_graph.cypher"),
-        database=st.secrets["DATABASE"],
+        database=st.secrets["NEO4J_DATABASE"],
     )
 
 col1, col2 = st.columns([4, 1])
@@ -50,7 +50,7 @@ with col1:
     # and the recipes they've commented on.
     df = db.run_cypher(
         query=db.generate_query(cypher_filename="get_tribes.cypher"),
-        database=st.secrets["DATABASE"],
+        database=st.secrets["NEO4J_DATABASE"],
     )
 
     # Robustly determine which column in the DataFrame holds the user identifier.
@@ -144,7 +144,7 @@ with col2:
     # different communities, identified by a separate Cypher query.
     bridge_users = db.run_cypher(
         query=db.generate_query(cypher_filename="get_bridge_users.cypher"),
-        database=st.secrets["DATABASE"],
+        database=st.secrets["NEO4J_DATABASE"],
     )
 
     st.dataframe(

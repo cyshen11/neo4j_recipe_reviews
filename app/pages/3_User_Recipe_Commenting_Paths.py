@@ -14,9 +14,9 @@ from component.database import Database
 
 # Initialize a connection to the Neo4j database using credentials from Streamlit secrets.
 db = Database(
-    uri=st.secrets["URI"],
-    username=st.secrets["USERNAME"],
-    password=st.secrets["PASSWORD"],
+    uri=st.secrets["NEO4J_URI"],
+    username=st.secrets["NEO4J_USERNAME"],
+    password=st.secrets["NEO4J_PASSWORD"],
 )
 
 st.markdown("# User-Recipe Commenting Paths")
@@ -34,7 +34,7 @@ all_recipes = db.run_cypher(
         # Fetch the list of all available recipes to populate the selection dropdown.
         cypher_filename="get_all_recipes.cypher"
     ),
-    database=st.secrets["DATABASE"],
+    database=st.secrets["NEO4J_DATABASE"],
 )
 
 # User input to select a starting recipe for the path analysis.
@@ -47,7 +47,7 @@ commenting_paths = db.run_cypher(
         # after they have commented on the initial selected recipe.
         cypher_filename="get_user_commenting_paths.cypher"
     ).replace("{recipe}", recipe),
-    database=st.secrets["DATABASE"],
+    database=st.secrets["NEO4J_DATABASE"],
 )
 
 # Display the results in a Streamlit DataFrame.

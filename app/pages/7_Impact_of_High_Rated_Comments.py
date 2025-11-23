@@ -17,9 +17,9 @@ from component.database import Database
 
 # Initialize a connection to the Neo4j database using credentials from Streamlit secrets.
 db = Database(
-    uri=st.secrets["URI"],
-    username=st.secrets["USERNAME"],
-    password=st.secrets["PASSWORD"],
+    uri=st.secrets["NEO4J_URI"],
+    username=st.secrets["NEO4J_USERNAME"],
+    password=st.secrets["NEO4J_PASSWORD"],
 )
 
 st.markdown("# Impact of High-Rated Comments")
@@ -38,7 +38,7 @@ For a given recipe, what is the total reply_count and thumbs_up on comments post
 # Fetch the list of all available recipes to populate the selection dropdown.
 all_recipes = db.run_cypher(
     query=db.generate_query(cypher_filename="get_all_recipes.cypher"),
-    database=st.secrets["DATABASE"],
+    database=st.secrets["NEO4J_DATABASE"],
 )
 
 # User input to select a recipe to analyze.
@@ -51,7 +51,7 @@ df = db.run_cypher(
         # and then aggregates the reply and thumbs-up counts of all subsequent comments.
         cypher_filename="get_reply_count_thumbs_up.cypher"
     ).format(recipe=recipe),
-    database=st.secrets["DATABASE"],
+    database=st.secrets["NEO4J_DATABASE"],
 )
 # Convert the 'created_at' Unix timestamp to a readable datetime format.
 # The logic checks if the timestamp is likely in milliseconds ( > 1e12) or seconds
